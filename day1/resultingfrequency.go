@@ -8,14 +8,26 @@ import (
 	"strconv"
 )
 
-func getResultingFrequency(input []int) int64 {
+func getResultingFrequency(frequenciesChange []int) int64 {
 	var sum int64
-
-	for _, val := range input {
-		sum = sum + int64(val)
+	for _, f := range frequenciesChange {
+		sum = sum + int64(f)
 	}
-
 	return sum
+}
+
+func getRepeatedFrequency(frequenciesChange []int) int64 {
+	hash := make(map[int64]bool)
+	var sum int64
+	for {
+		for _, f := range frequenciesChange {
+			sum = sum + int64(f)
+			if _, ok := hash[sum]; ok {
+				return sum
+			}
+			hash[sum] = true
+		}
+	}
 }
 
 func readInts(r io.Reader) ([]int, error) {
@@ -41,12 +53,16 @@ func main() {
 
 	reader := bufio.NewReader(file)
 
-	input, err := readInts(reader)
+	frequenciesChange, err := readInts(reader)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	sum := getResultingFrequency(input)
+	sum := getResultingFrequency(frequenciesChange)
 
 	fmt.Printf("Sum = %d\n", sum)
+
+	repeated := getRepeatedFrequency(frequenciesChange)
+
+	fmt.Printf("Repeated = %d\n", repeated)
 }
