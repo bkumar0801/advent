@@ -8,6 +8,10 @@ import (
 	"strconv"
 )
 
+type void struct{}
+
+var member void
+
 func getResultingFrequency(frequenciesChange []int) int64 {
 	var sum int64
 	for _, f := range frequenciesChange {
@@ -17,15 +21,15 @@ func getResultingFrequency(frequenciesChange []int) int64 {
 }
 
 func getRepeatedFrequency(frequenciesChange []int) int64 {
-	hash := make(map[int64]bool)
+	set := make(map[int64]void)
 	var sum int64
 	for {
 		for _, f := range frequenciesChange {
 			sum = sum + int64(f)
-			if _, ok := hash[sum]; ok {
+			if _, ok := set[sum]; ok {
 				return sum
 			}
-			hash[sum] = true
+			set[sum] = member
 		}
 	}
 }
